@@ -19,16 +19,20 @@
     <li>
       <a href="/post/<%= post._id %>">
         <span><%= post.title %></span>
-        <span class="article-list__date"
-          ><%= post.createdAt.toDateString() %></span
-        >
+        <span class="article-list__date">
+          <% if (post.createdAt) { %> <%= post.createdAt.toDateString() %> <% }
+          else { %> Unknown Date <% } %>
+        </span>
       </a>
     </li>
     <% }) %>
   </ul>
-  <% if (nextPage !== null) { %>
+  <% if (nextPage && nextPage !== null) { %>
   <a href="/?page=<%= nextPage %>" class="pagination">&lt; View Older Posts</a>
-  <% } %> <% }else { %> <% %>
-  <div>"No post avail"</div>
+  <% } %> <% } else { %>
+  <!-- Use inline CSS to center the text and apply the Poppins font -->
+  <div style="font-family: 'Poppins', sans-serif; text-align: center">
+    No post available
+  </div>
   <% } %>
 </section>

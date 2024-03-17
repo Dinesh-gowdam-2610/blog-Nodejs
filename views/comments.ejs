@@ -1,0 +1,18 @@
+<% data.forEach(comment => { %>
+<!-- Single Comment -->
+<div class="comment">
+  <div class="comment-meta">
+    <img src="<%= comment.avatar %>" alt="User Avatar" />
+  </div>
+  <div class="comment-content">
+    <div class="comment-author"><%= comment.name %></div>
+    <div class="comment-email"><%= comment.email %></div>
+    <p class="comment-text"><%= comment.text %></p>
+    <div class="comment-actions">
+      <span class="comment-time">Comments added <%= comment.time %></span>
+      <button class="comment-reply-btn">Reply</button>
+    </div>
+  </div>
+</div>
+<!-- End Single Comment -->
+<% }) %>

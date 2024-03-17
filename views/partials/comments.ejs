@@ -1,0 +1,43 @@
+<% if (currentRoute !== "/comments") { %>
+<section class="comments">
+  <h2 class="comments__heading">Comments</h2>
+  <!-- Form to add new comment -->
+  <form action="/add-comment" method="POST" role="comment">
+    <div>
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter your name"
+        pattern="[A-Za-z\s]{2,}"
+        title="Please enter a valid name (at least 2 characters, only letters and spaces)"
+        required
+      />
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+        title="Please enter a valid email address"
+        required
+      />
+    </div>
+    <div>
+      <label for="comment">Comment:</label>
+      <textarea
+        id="commentInput"
+        name="comment"
+        rows="4"
+        placeholder="Enter your comment"
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="comment-submit-btn">Add Comment</button>
+  </form>
+</section>
+<% } %>
