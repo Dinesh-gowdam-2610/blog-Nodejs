@@ -21,7 +21,8 @@ router.get("", async (req, res) => {
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec();
-
+    const findAllData = await Comment.find({}).exec();
+    console.log("findAllData", [...findAllData, ...data]);
     // Count is deprecated - please use countDocuments
     // const count = await Post.count();
     const count = await Post.countDocuments({});
@@ -30,7 +31,7 @@ router.get("", async (req, res) => {
 
     res.render("index", {
       locals,
-      data,
+      data: [...findAllData, ...data],
       current: page,
       nextPage: hasNextPage ? nextPage : null,
       currentRoute: "/",
@@ -120,6 +121,15 @@ router.get("/about", (req, res) => {
     currentRoute: "/about",
   });
 });
+router.delete("/deleteAllRecords", async (req, res) => {
+  await Comment.deleteMany({});
+  res.send({ outcome: "Success", message: " Record deleted successfully" });
+});
+router.get("/getAllComments", async (req, res) => {
+  const findAllData = await Comment.find({}).exec();
+  console.log("findAllData", findAllData);
+  res.send({ outcome: "Success", message: findAllData });
+});
 
 /**
  * POST /
@@ -127,21 +137,37 @@ router.get("/about", (req, res) => {
  */
 router.post("/add-comment", async (req, res) => {
   try {
-    console.log("ready", req.body);
-
-    const allDocuments = await Comment.find();
-
-    const reqBodyParams = {
-      _id: Date.now(),
-      name: req.body.name,
+    const findByNameAndEmail = await Comment.find({
       email: req.body.email,
+      name: req.body.name,
       comment: req.body.comment,
-    };
-    const commentDetails = await Comment.create(reqBodyParams);
-    res.render("comments", {
-      data: [commentDetails],
-      currentRoute: "/comments",
     });
+    let filteredValues = findByNameAndEmail.filter(
+      (property) =>
+        property.name === req.body.name &&
+        property.email === req.body.email &&
+        property.comment === req.body.comment
+    );
+    if (filteredValues.length == 0) {
+      const reqBodyParams = {
+        _id: Date.now(),
+        name: req.body.name,
+        email: req.body.email,
+        comment: req.body.comment,
+      };
+      await Comment.create(reqBodyParams);
+      let findAllData = await Comment.find({}).exec();
+      res.render("index", {
+        data: findAllData ? findAllData : [],
+        currentRoute: "/index",
+      });
+    } else {
+      let findAllData = await Comment.find({}).exec();
+      res.render("index", {
+        data: findAllData,
+        currentRoute: "/index",
+      });
+    }
   } catch (error) {
     console.log(error);
   }

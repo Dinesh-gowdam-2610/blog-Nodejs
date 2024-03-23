@@ -16,6 +16,28 @@
   <h2 class="articles__heading">Latest Posts</h2>
   <ul class="article-ul">
     <% data.forEach(post => { %>
+
+    <span class="comment-time">Comments added </span>
+    <% if (post?.email && post?.comment) { %>
+    <div class="comment">
+      <div class="comment-meta">
+        <img
+          src="https://imgs.search.brave.com/4ZCPOqSj8FoigQio6loH7lTo6aoPX5oxKkgjo8Ey7UQ/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA2LzM4Lzg1LzQ5/LzM2MF9GXzYzODg1/NDk3M19oZ0FGN3Z4/MmRSYXlvMUpPVWR6/Z0x0OG80ODhnTXdq/Uy5qcGc"
+          alt="User Avatar"
+        />
+      </div>
+      <div class="comment-content">
+        <div class="comment-author"><%= post.name %></div>
+        <div class="comment-email"><%= post.email %></div>
+        <p class="comment-text"><%= post.comment %></p>
+        <div class="comment-actions">
+          <span class="comment-time">Comments added <%= post.createdAt %></span>
+          <button class="comment-reply-btn">Reply</button>
+        </div>
+      </div>
+    </div>
+    <% } %> <% if (post.hasOwnProperty("createdAt") &&
+    post.hasOwnProperty("title")) { %>
     <li>
       <a href="/post/<%= post._id %>">
         <span><%= post.title %></span>
@@ -25,9 +47,9 @@
         </span>
       </a>
     </li>
-    <% }) %>
+    <% } %> <% }) %>
   </ul>
-  <% if (nextPage && nextPage !== null) { %>
+  <% if (currentRoute !== "/index" && nextPage && nextPage !== null) { %>
   <a href="/?page=<%= nextPage %>" class="pagination">&lt; View Older Posts</a>
   <% } %> <% } else { %>
   <!-- Use inline CSS to center the text and apply the Poppins font -->
